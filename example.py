@@ -5,6 +5,7 @@ from printers import dispatch
 
 
 if __name__ == "__main__":
-    source_ast = ast.parse("1 + 3; 4 / 2")
+    with open("samples/arithmetic.py", "r") as f:
+        source_ast = ast.parse(f.read())
     with open("my_file.py", "w") as output:
         dispatch(source_ast, output)
