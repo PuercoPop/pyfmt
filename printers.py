@@ -2,47 +2,47 @@
 import ast
 
 
-def dispatch(node):
+def dispatch(node, output):
     if isinstance(node, ast.Module):
         mv = ModuleVisitor()
-        mv.visit(node)
+        mv.visit(node, output)
     elif isinstance(node, ast.Expr):
         ev = ExprVisitor()
-        ev.visit(node)
+        ev.visit(node, output)
     elif isinstance(node, ast.BinOp):
         bov = BinOpVisitor()
-        bov.visit(node)
+        bov.visit(node, output)
     elif isinstance(node, ast.Num):
         nv = NumVisitor()
-        nv.visit(node)
+        nv.visit(node, output)
     elif isinstance(node, ast.Add):
         av = AddVisitor()
-        av.visit(node)
+        av.visit(node, output)
     else:
         import ipdb; ipdb.set_trace()
 
 class ModuleVisitor(ast.NodeVisitor):
-    def visit(self, node):
+    def visit(self, node, output):
         print node.__class__.__name__
         for node in node.body:
-            dispatch(node)
+            dispatch(node, output)
 
 class ExprVisitor(ast.NodeVisitor):
-    def visit(self, node):
+    def visit(self, node, output):
         print node.__class__.__name__
-        dispatch(node.value)
+        dispatch(node.value, output)
 
 class BinOpVisitor(ast.NodeVisitor):
-    def visit(self, node):
+    def visit(self, node, output):
         print node.__class__.__name__
-        dispatch(node.right)
-        dispatch(node.op)
-        dispatch(node.left)
+        dispatch(node.right, output)
+        dispatch(node.op, output)
+        dispatch(node.left, output)
 
 class NumVisitor(ast.NodeVisitor):
-    def visit(self, node):
-        print node.n
+    def visit(self, node, output):
+        output.write(str(node.n))
 
 class AddVisitor(ast.NodeVisitor):
-    def visit(self, node):
-        print "+"
+    def visit(self, node, output):
+        output.write(" + ")
