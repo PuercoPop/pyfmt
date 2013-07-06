@@ -18,6 +18,9 @@ def dispatch(node, output):
     elif isinstance(node, ast.Add):
         av = AddVisitor()
         av.visit(node, output)
+    elif isinstance(node, ast.Div):
+        dv = DivVisitor()
+        dv.visit(node, output)
     else:
         import ipdb; ipdb.set_trace()
 
@@ -31,6 +34,7 @@ class ExprVisitor(ast.NodeVisitor):
     def visit(self, node, output):
         print node.__class__.__name__
         dispatch(node.value, output)
+        output.write("\n")
 
 class BinOpVisitor(ast.NodeVisitor):
     def visit(self, node, output):
@@ -46,3 +50,7 @@ class NumVisitor(ast.NodeVisitor):
 class AddVisitor(ast.NodeVisitor):
     def visit(self, node, output):
         output.write(" + ")
+
+class DivVisitor(ast.NodeVisitor):
+    def visit(self, node, output):
+        output.write(" / ")
