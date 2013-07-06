@@ -1,0 +1,4 @@
+*.py[co]
+log/
+\.DS_Store
+\.#*
